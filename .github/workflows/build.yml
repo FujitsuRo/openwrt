@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout RB450Gx4 branch
@@ -28,14 +28,15 @@ jobs:
 
       - name: Configure RB450Gx4
         run: |
-          FORCE=1 make defconfig
+          make defconfig IGNORE_ERRORS=m
 
       - name: Build firmware
         run: |
-          FORCE=1 make -j2 V=s
+          make -j2 V=s IGNORE_ERRORS=m
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: RB450Gx4-firmware
           path: |
