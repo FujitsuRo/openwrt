@@ -37,6 +37,8 @@ jobs:
 
       - name: Build
         run: |
+          make tools/mpfr/clean FORCE=1 || true
+          make tools/mpfr/compile V=s FORCE=1
           make -j1 V=s FORCE=1
 
       - name: Upload firmware
