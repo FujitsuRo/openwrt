@@ -21,13 +21,15 @@ jobs:
         run: |
           git clone --depth 1 --branch RB450Gx4-rebase-sdhci https://github.com/FujitsuRo/openwrt.git .
 
-      - name: Create config
+      - name: Create RB450Gx4 config
         run: |
           cat > .config <<'EOF'
 CONFIG_TARGET_ipq40xx=y
 CONFIG_TARGET_ipq40xx_DEVICE_mikrotik_rb450gx4=y
+CONFIG_TARGET_DEVICE_ipq40xx_DEVICE_mikrotik_rb450gx4=y
 CONFIG_PACKAGE_luci=y
 EOF
+          cat .config
 
       - name: Update feeds
         run: |
@@ -38,6 +40,7 @@ EOF
         run: |
           export FORCE=1
           make defconfig FORCE=1
+          echo "===== FINAL CONFIG TARGET ====="
           grep -E "CONFIG_TARGET|rb450gx4|luci" .config || true
 
       - name: Build
