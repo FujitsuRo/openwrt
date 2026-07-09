@@ -7,6 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     container: ubuntu:20.04
+    env:
+      FORCE_UNSAFE_CONFIGURE: 1
 
     steps:
       - name: Install dependencies
@@ -36,7 +38,6 @@ jobs:
       - name: Defconfig
         run: |
           make defconfig FORCE=1
-          echo "===== FINAL CONFIG TARGET ====="
           grep -E "CONFIG_TARGET|rb450gx4|luci" .config || true
 
       - name: Build
