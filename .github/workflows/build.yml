@@ -1,4 +1,4 @@
-name: Build RB450Gx4
+name: Build RB450Gx4 Minimal
 
 on:
   workflow_dispatch:
@@ -19,6 +19,7 @@ jobs:
       - name: Clone RB450Gx4 branch
         run: |
           git clone --depth 1 --branch RB450Gx4-rebase-sdhci https://github.com/FujitsuRo/openwrt.git .
+          git config --global --add safe.directory /__w/openwrt/openwrt
 
       - name: Create RB450Gx4 config
         run: |
@@ -26,19 +27,13 @@ jobs:
             'CONFIG_TARGET_ipq40xx=y' \
             'CONFIG_TARGET_ipq40xx_DEVICE_mikrotik_rb450gx4=y' \
             'CONFIG_TARGET_DEVICE_ipq40xx_DEVICE_mikrotik_rb450gx4=y' \
-            'CONFIG_PACKAGE_luci=y' \
             > .config
           cat .config
-
-      - name: Update feeds
-        run: |
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
 
       - name: Defconfig
         run: |
           make defconfig FORCE=1
-          grep -E "CONFIG_TARGET|rb450gx4|luci" .config || true
+          grep -E "CONFIG_TARGET|rb450gx4" .config || true
 
       - name: Build
         run: |
@@ -48,6 +43,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: RB450Gx4-firmware
+          name: RB450Gx4-firmware-minimal
           path: |
             bin/targets/**
