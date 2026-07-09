@@ -61,4 +61,4 @@ EOF
         with:
           name: RB450Gx4-fixed-firmware
           path: |
-            bin/targets/**
+            bin/targets/**# force full firmware build
